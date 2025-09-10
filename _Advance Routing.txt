@@ -888,6 +888,9 @@ conf t
   neighbor 35.3.5.5 remote-as 45
   neighbor 209.9.9.1 remote-as 1
   address-family ipv4
+   neighbor 32.3.2.2 activate
+   neighbor 35.3.5.5 activate
+   neighbor 209.9.9.1 activate
    network 209.9.9.0 mask 255.255.255.0
    network 32.3.2.0 mask 255.255.255.0
    network 33.33.33.33 mask 255.255.255.255
@@ -902,6 +905,9 @@ config t
   neighbor 35.3.5.3 remote-as 3
   neighbor 45.4.5.4 remote-as 45
   address-family ipv4
+   neighbor 25.2.5.2 activate
+   neighbor 35.3.5.3 activate
+   neighbor 45.4.5.4 activate
    network 8.8.8.8 mask 255.255.255.255
    network 55.55.55.55 mask 255.255.255.255
    network 25.2.5.0 mask 255.255.255.0
@@ -914,18 +920,22 @@ Exercise 06: Configure BGP on I2(PLDT). Set the ASN number to 2.
 
 !@I2 - PLDT
 config t
- router bgp __
+ router bgp 2
  bgp log-neighbor-changes
- neighbor __.__.__.__ remote-as __
- neighbor __.__.__.__  remote-as __
- neighbor __.__.__.__  remote-as __
- neighbor __.__.__.__  remote-as __
- address-family __
-  network __.__.__.__ mask __.__.__.__
-  network __.__.__.__ mask __.__.__.__
-  network __.__.__.__ mask __.__.__.__
-  network __.__.__.__ mask __.__.__.__
-  network __.__.__.__ mask __.__.__.__
+ neighbor 32.3.2.3 remote-as 3
+ neighbor 25.2.5.5 remote-as 45
+ neighbor 24.2.4.4 remote-as 45
+ neighbor 207.7.7.1 remote-as 1
+ address-family ipv4
+  neighbor 32.3.2.3 activate
+  neighbor 25.2.5.5 activate
+  neighbor 24.2.4.4 activate
+  neighbor 207.7.7.1 activate
+  network 22.22.22.22 mask 255.255.255.255
+  network 32.3.2.0 mask 255.255.255.0
+  network 25.2.5.0 mask 255.255.255.0
+  network 24.2.4.0 mask 255.255.255.0
+  network 207.7.7.0 mask 255.255.255.0
   end
 
 Ans
@@ -954,8 +964,13 @@ BGP - OSPF Redistribution
 conf t
  router ospf 1
   default-information originate always
+end
   
 ---
+Recipe for NAT
+1. Specify OUTSIDE and INSIDE
+2. Configure an ACL (Which IPs are allowed to pass)
+3. PAT (Port Address Translation)
 
 NAT
 
@@ -972,3 +987,5 @@ conf t
   exit
  !
  ip nat inside source list 1 interface ethernet 1/1 overload
+
+show ip nat translation
